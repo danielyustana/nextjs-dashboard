@@ -32,12 +32,13 @@ export async function createInvoice(formData: FormData) {
         `;
 
         revalidatePath('/dashboard/invoices');
-        redirect('/dashboard/invoices');
     } catch (error) {
         return {
             message: 'Database Error: Failed to create invoice',
         };
     }
+    
+    redirect('/dashboard/invoices');
 }
 
 export async function updateInvoice(id: string, formData: FormData) {
@@ -51,18 +52,19 @@ export async function updateInvoice(id: string, formData: FormData) {
 
     try {
         await sql`
-        UPDATE invoices
+            UPDATE invoices
             SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
             WHERE id = ${id}
         `;
 
         revalidatePath('/dashboard/invoices');
-        redirect('/dashboard/invoices');
     } catch (error) {
         return {
             message: 'Database Error: Failed to update invoice',
         };
     }
+
+    redirect('/dashboard/invoices');
 }
 
 export async function deleteInvoice(id: string) {
